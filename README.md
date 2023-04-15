@@ -20,3 +20,10 @@ Now you can use the Commitizen script to create commits with standardized commit
 By using Commitizen in your React codebase, you can ensure that all commits follow a consistent format, making it easier to understand the purpose of each commit and maintain a clean commit history.
 
 set NODE_OPTIONS=--openssl-legacy-provider
+
+Add the following to your settings.json file:
+
+```
+"editor.formatOnSave": true
+
+```
