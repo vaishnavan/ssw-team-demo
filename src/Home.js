@@ -29,7 +29,7 @@ class Home extends React.PureComponent {
     return (
       <div className="Home">
         <h2>
-          Count value is
+          Count test example value is
           {count}
         </h2>
         <button onClick={this.handleIncrement} type="button">
