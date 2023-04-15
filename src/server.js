@@ -1,31 +1,37 @@
-import App from './App';
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable max-len */
+/* eslint-disable no-shadow */
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import App from './App';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
-const cssLinksFromAssets = (assets, entrypoint) => {
-  return assets[entrypoint] ? assets[entrypoint].css ?
-  assets[entrypoint].css.map(asset=>
-    `<link rel="stylesheet" href="${asset}">`
-  ).join('') : '' : '';
-};
+const cssLinksFromAssets = (assets, entrypoint) => (assets[entrypoint]
+  ? assets[entrypoint].css
+    ? assets[entrypoint].css
+      .map((asset) => `<link rel="stylesheet" href="${asset}">`)
+      .join('')
+    : ''
+  : '');
 
-const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => {
-  return assets[entrypoint] ? assets[entrypoint].js ?
-  assets[entrypoint].js.map(asset=>
-    `<script src="${asset}" ${extra.join(" ")}></script>`
-  ).join('') : '' : '';
-};
+const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => (assets[entrypoint]
+  ? assets[entrypoint].js
+    ? assets[entrypoint].js
+      .map((asset) => `<script src="${asset}" ${extra.join(' ')}></script>`)
+      .join('')
+    : ''
+  : '');
 
-export const renderApp = (req, res) => {
+export const renderApp = (req, _) => {
   const context = {};
   const markup = renderToString(
     <StaticRouter context={context} location={req.url}>
       <App />
-    </StaticRouter>
+    </StaticRouter>,
   );
   const html = `<!doctype html>
   <html lang="">
@@ -40,16 +46,16 @@ export const renderApp = (req, res) => {
       <div id="root">${markup}</div>
       ${jsScriptTagsFromAssets(assets, 'client', 'defer', 'crossorigin')}
   </body>
-</html>`
-  return {context, html};
-}
+</html>`;
+  return { context, html };
+};
 
 const server = express();
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
-    const {context, html} = renderApp(req, res);
+    const { context, html } = renderApp(req, res);
     if (context.url) {
       res.redirect(context.url);
     } else {
