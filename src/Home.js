@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
-import React from 'react';
-import './Home.css';
+import React from 'react'
+import './Home.css'
 
 class Home extends React.PureComponent {
   render() {
@@ -8,8 +8,8 @@ class Home extends React.PureComponent {
       <div className="Home">
         <h1>helo vaishnavan</h1>
       </div>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home

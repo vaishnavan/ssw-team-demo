@@ -12,10 +12,11 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    semi: ['error', 'always'],
+    semi: ['error', 'never'],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'linebreak-style': 'off',
     'no-unused-vars': 'off',
     'no-console': 'off',
     'no-undef': 'off',
   },
-};
+}

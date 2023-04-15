@@ -2,13 +2,13 @@
 /* eslint-disable max-len */
 /* eslint-disable no-shadow */
 /* eslint-disable no-nested-ternary */
-import React from 'react';
-import { StaticRouter } from 'react-router-dom';
-import express from 'express';
-import { renderToString } from 'react-dom/server';
-import App from './App';
+import React from 'react'
+import { StaticRouter } from 'react-router-dom'
+import express from 'express'
+import { renderToString } from 'react-dom/server'
+import App from './App'
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST)
 
 const cssLinksFromAssets = (assets, entrypoint) => (assets[entrypoint]
   ? assets[entrypoint].css
@@ -16,7 +16,7 @@ const cssLinksFromAssets = (assets, entrypoint) => (assets[entrypoint]
       .map((asset) => `<link rel="stylesheet" href="${asset}">`)
       .join('')
     : ''
-  : '');
+  : '')
 
 const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => (assets[entrypoint]
   ? assets[entrypoint].js
@@ -24,15 +24,15 @@ const jsScriptTagsFromAssets = (assets, entrypoint, ...extra) => (assets[entrypo
       .map((asset) => `<script src="${asset}" ${extra.join(' ')}></script>`)
       .join('')
     : ''
-  : '');
+  : '')
 
 export const renderApp = (req, _) => {
-  const context = {};
+  const context = {}
   const markup = renderToString(
     <StaticRouter context={context} location={req.url}>
       <App />
     </StaticRouter>,
-  );
+  )
   const html = `<!doctype html>
   <html lang="">
   <head>
@@ -46,21 +46,21 @@ export const renderApp = (req, _) => {
       <div id="root">${markup}</div>
       ${jsScriptTagsFromAssets(assets, 'client', 'defer', 'crossorigin')}
   </body>
-</html>`;
-  return { context, html };
-};
+</html>`
+  return { context, html }
+}
 
-const server = express();
+const server = express()
 server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .get('/*', (req, res) => {
-    const { context, html } = renderApp(req, res);
+    const { context, html } = renderApp(req, res)
     if (context.url) {
-      res.redirect(context.url);
+      res.redirect(context.url)
     } else {
-      res.status(200).send(html);
+      res.status(200).send(html)
     }
-  });
+  })
 
-export default server;
+export default server
